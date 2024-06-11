@@ -4,28 +4,28 @@
 	  "path" : "pages/home/home",
 	  "style" : 
 	  {
-	    "navigationBarTitleText" : ""
+	    "navigationBarTitleText" : "主页"
 	  }
 	},
 	{
 	  "path" : "pages/cate/cate",
 	  "style" : 
 	  {
-	    "navigationBarTitleText" : ""
+	    "navigationBarTitleText" : "分类"
 	  }
 	},
 	{
 	  "path" : "pages/cart/cart",
 	  "style" : 
 	  {
-	    "navigationBarTitleText" : ""
+	    "navigationBarTitleText" : "购物车"
 	  }
 	},
 	{
 	  "path" : "pages/my/my",
 	  "style" : 
 	  {
-	    "navigationBarTitleText" : ""
+	    "navigationBarTitleText" : "我的"
 	  }
 	}],
   "subPackages": [
