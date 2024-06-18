@@ -1,14 +1,17 @@
 <template>
   <view>
+    <!-- 自定义组件 -->
+    <!-- <my-search :bgcolor="'#000000'" :radius="18"></my-search> -->
+    <my-search @click="gotoSearch"></my-search>
     <view class="scroll-view-container">
       <!-- 左侧滑动区 -->
-      <scroll-view class="left-scroll-view" scroll-y="true" :style="{height: wx+'px'}">
+      <scroll-view class="left-scroll-view" scroll-y="true" :style="{height: wh+'px'}">
         <block v-for="(item,i) in cateList" :key="i">
           <view :class="['left-scroll-view-item', i===active?'active':'']" @click="activeChanged(i)">{{item.cat_name}}</view>
         </block>
       </scroll-view>
       <!-- 右侧滑动区 -->
-      <scroll-view scroll-y="true" :style="{height: wx+'px'}" :scroll-top="scrollTop">
+      <scroll-view scroll-y="true" :style="{height: wh+'px'}" :scroll-top="scrollTop">
         <view class="cate-lv2" v-for="(item2,i2) in cateLevel2" :key="i2">
           <!-- 二级分类的标题 -->
           <view class="cate-lv2-title">/{{item2.cat_name}}/</view>
@@ -41,8 +44,8 @@
       };
     },
     onLoad() {
-      const sysInfo = uni.getSystemInfo()
-      this.wh = sysInfo.windowHeight
+      const sysInfo = uni.getSystemInfo();
+      this.wh = sysInfo.windowHeight-50;
       
       this.getCateList()
     },
@@ -67,6 +70,12 @@
         uni.navigateTo({
           url:'/subpkg/goods_list/goods_list?cid='+item.cat_id
         })
+      },
+      
+      gotoSearch(){
+        uni.navigateTo({
+          url: '/subpkg/search/search'
+        })
       }
     }
   }
@@ -78,32 +87,30 @@
   height: 100vh;
   .left-scroll-view{
     width: 120px;
-  }
-}
-
-.left-scroll-view-item{
-  background-color: #F7F7F7;
-  line-height: 60px;
-  text-align: center;
-  font-size: 12;
-  
-  &.active{
-    background-color: #FFF;
-    position: relative;
-    &::before{
-      content: ' ';
-      display: block;
-      width: 3px;
-      height: 30px;
-      background-color: #C00000;
-      position: absolute;
-      top: 50%;
-      left:0;
-      transform: translateY(-50%);
+    .left-scroll-view-item{
+      background-color: #F7F7F7;
+      line-height: 60px;
+      text-align: center;
+      font-size: 12;
+      
+      &.active{
+        background-color: #FFF;
+        position: relative;
+        &::before{
+          content: ' ';
+          display: block;
+          width: 3px;
+          height: 30px;
+          background-color: #C00000;
+          position: absolute;
+          top: 50%;
+          left:0;
+          transform: translateY(-50%);
+        }
+      }
     }
   }
 }
-
 .cate-lv2-title{
   font-size: 12px;
   font-weight: bold;
@@ -131,4 +138,5 @@
   }
 
 }
+
 </style>
