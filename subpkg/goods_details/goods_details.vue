@@ -24,7 +24,7 @@
         </view>
       </view>
       <!-- 运费 -->
-      <view class="yf">快递：免运费</view>
+      <view class="yf">快递：免运费{{'---'+this.cart+'---'}}</view>
     </view>
   
     <rich-text :nodes="goods_info.goods_introduce"></rich-text>
@@ -39,7 +39,32 @@
 </template>
 
 <script>
+  // import {useCart} from '@/store/cart'
+  import {mapState, mapMutations, mapGetters} from 'vuex'
+  
   export default {
+    computed:{
+      // cart:useCart().cart
+      ...mapState('m_cart',[]),
+      ...mapGetters('m_cart',['total'])
+    },
+    watch:{
+      // total(newVal){
+      //   const findResult = this.options.find(x => x.text === "购物车")
+      //   if(findResult){
+      //     findResult.info = newVal
+      //   }
+      // }
+      total:{
+        handler(newVal){
+            const findResult = this.options.find(x => x.text === "购物车")
+            if(findResult){
+              findResult.info = newVal
+            }
+        },
+        immediate:true
+      }
+    },
     data() {
       return {
         goods_info:{},
@@ -69,15 +94,17 @@
     onLoad(options){
       const goods_id = options.goods_id
       this.getGoodsDetail(goods_id)
+
+      
     },
     methods:{
+      ...mapMutations('m_cart',['addToCart']),
       async getGoodsDetail(goods_id){
         const {data:res} = await uni.$http.get('/api/public/v1/goods/detail',{goods_id: goods_id})
         if(res.meta.status !== 200) return uni.$showMsg()
         res.message.goods_introduce = res.message.goods_introduce.replace(/<img /g,`<img style="display:block;"`).replace(/webp/g,'jpg')
         
         this.goods_info = res.message
-        console.log(this.goods_info);
       },
       preview(i){
         // 大图预览
@@ -92,9 +119,25 @@
             url:'/pages/cart/cart'
           })
         }
+      },
+      buttonClick(e){
+        if(e.content.text === '加入购物车'){
+          const goods ={
+            goods_id:this.goods_info.goods_id,
+            goods_name:this.goods_info.goods_name,
+            goods_price:this.goods_info.goods_price,
+            goods_count:1,
+            goods_small_logo:this.goods_info.goods_small_logo,
+            goods_state:true
+          }
+          
+          this.addToCart(goods)
+        }
+        
       }
     }
   }
+
 </script>
 
 <style lang="scss">
